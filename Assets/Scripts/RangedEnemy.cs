@@ -21,9 +21,9 @@ public class RangedEnemy : Enemy {
 
 	public override void Move()
 	{
-		if(Vector3.Distance(transform.position, player.transform.position) < 8)
+		if(Vector3.Distance(transform.position, Player2D.instance.transform.position) < 8)
 		{
-			transform.up = player.transform.position - transform.position;
+			transform.up = Player2D.instance.transform.position - transform.position;
 			transform.Translate(Vector3.up * speed * Time.deltaTime);
 		}
 	}

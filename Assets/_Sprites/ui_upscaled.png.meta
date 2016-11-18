@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 44222233c9e9449d0ab8546d14e1a8b5
-timeCreated: 1479485445
+timeCreated: 1479498658
 licenseType: Pro
 TextureImporter:
   fileIDToRecycleName:
@@ -9,6 +9,7 @@ TextureImporter:
     21300004: MagicBar
     21300006: XPBar
     21300008: ui_upscaled_4
+    21300010: EnemyHealthContainer
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -61,9 +62,9 @@ TextureImporter:
       name: HealthBarHolder
       rect:
         serializedVersion: 2
-        x: 16
+        x: 15
         y: 80
-        width: 200
+        width: 201
         height: 64
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -117,6 +118,19 @@ TextureImporter:
         y: 16
         width: 180
         height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: EnemyHealthContainer
+      rect:
+        serializedVersion: 2
+        x: 87
+        y: 122
+        width: 129
+        height: 20
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}

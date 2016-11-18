@@ -8,19 +8,20 @@ public class Enemy : MonoBehaviour
 	public delegate void HitPlayer(int damage);
 	public static event HitPlayer GetHit;
 
-	public GameObject player;
+
 
 	public float speed = 10.0f;
+	public int maxHealth;
 	public int health;
 
-	bool dead = false;
+	public bool dead = false;
 
 	public AudioClip[] soundEffects;
 
 
 	// Use this for initialization
 	protected void Start () {
-		player = GameObject.Find("Player");
+		
 	}
 
 
@@ -38,16 +39,19 @@ public class Enemy : MonoBehaviour
 
 	public void TakeDamage(int damage)
 	{
-		if(health - damage <= 0 && dead == false)
+		
+		health -= damage;
+		UIManager.instance.EnemyHealthSet(this);
+		if(health <= 0 && dead == false)
 		{
 			GetComponent<AudioSource>().clip = soundEffects[1];
 			GetComponent<AudioSource>().Play();
 			dead = true;
-			player = this.gameObject;
+			UIManager.instance.EnemyHealthSet(this);
 			StartCoroutine(Die());
 		}
 
-		health -= damage;
+
 	}
 
 	protected virtual void Hit(int damage)

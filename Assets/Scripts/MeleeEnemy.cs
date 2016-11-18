@@ -13,7 +13,8 @@ public class MeleeEnemy : Enemy {
 	// Use this for initialization
 	void Start () {
 		base.Start();
-		health = 100;
+		maxHealth = 100;
+		health = maxHealth;
 
 		animator = GetComponent<Animator>();
 	}
@@ -29,7 +30,10 @@ public class MeleeEnemy : Enemy {
 		
 		if(Vector3.Distance(transform.position, Player2D.instance.transform.position) < 10)
 		{
-			transform.up = Player2D.instance.transform.position - transform.position;
+			if(dead)
+				transform.up = transform.position - transform.position;
+			else
+				transform.up = Player2D.instance.transform.position - transform.position;
 			transform.Translate(Vector3.up * 2 * Time.deltaTime);
 			animator.SetBool("IsWalking", true);
 		}
