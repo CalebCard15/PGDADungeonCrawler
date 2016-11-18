@@ -12,7 +12,7 @@ public class UIManager : PersistentSingleton<UIManager> {
 	public Image enemyHealthBar;
 	public Text enemyHealthText;
 
-	private GameManager gameManager;
+	//private GameManager gameManager;
 
 
 
@@ -33,7 +33,7 @@ public class UIManager : PersistentSingleton<UIManager> {
 	// Use this for initialization
 	void Start () {
 		
-		Init();
+		//Init();
 //		levelText = GameObject.Find("LevelText").GetComponent<Text>();
 //		healthText = GameObject.Find("HealthText").GetComponent<Text>();
 	}
@@ -41,7 +41,7 @@ public class UIManager : PersistentSingleton<UIManager> {
 	void Init()
 	{
 		
-		gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+		//gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 		healthBar = GameObject.Find("HealthBar").GetComponent<Image>();
 		manaBar = GameObject.Find("ManaBar").GetComponent<Image>();
 		xpBar = GameObject.Find("XPBar").GetComponent<Image>();

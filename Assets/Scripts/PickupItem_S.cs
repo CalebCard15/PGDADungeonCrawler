@@ -11,7 +11,7 @@ public class PickupItem_S : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		i = Random.Range(0, pickUpItemsArray.Length+1);
+		i = Random.Range(0, pickUpItemsArray.Length);
 		GetComponent<SpriteRenderer>().sprite = pickUpItemsArray[i].itemSprt;
 		functionNameToCall = pickUpItemsArray[i].functionName;
 	}

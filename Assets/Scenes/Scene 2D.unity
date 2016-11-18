@@ -1010,6 +1010,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 114000010595904944, guid: b662834559fde40dcb0404655bdb7ea7,
+        type: 2}
+      propertyPath: health
+      value: 100
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b662834559fde40dcb0404655bdb7ea7, type: 2}
   m_IsPrefabParent: 0
@@ -1411,6 +1416,7 @@ MonoBehaviour:
   healthBar: {fileID: 0}
   manaBar: {fileID: 0}
   xpBar: {fileID: 0}
+  enemyHealthUI: {fileID: 0}
   enemyHealthBar: {fileID: 0}
   enemyHealthText: {fileID: 0}
 --- !u!1 &1771843359
