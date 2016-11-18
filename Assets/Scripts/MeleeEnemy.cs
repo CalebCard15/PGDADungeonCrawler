@@ -27,9 +27,9 @@ public class MeleeEnemy : Enemy {
 	public override void Move() 
 	{
 		
-		if(Vector3.Distance(transform.position, player.transform.position) < 10)
+		if(Vector3.Distance(transform.position, Player2D.instance.transform.position) < 10)
 		{
-			transform.up = player.transform.position - transform.position;
+			transform.up = Player2D.instance.transform.position - transform.position;
 			transform.Translate(Vector3.up * 2 * Time.deltaTime);
 			animator.SetBool("IsWalking", true);
 		}
@@ -45,7 +45,7 @@ public class MeleeEnemy : Enemy {
 	{
 		if(col.transform.tag == "Player")
 		{
-			Attack(player.GetComponent<Player2D>());
+			Attack();
 		}
 	}
 		
@@ -54,11 +54,11 @@ public class MeleeEnemy : Enemy {
 	{
 		if(col.transform.tag == "Player")
 		{
-			Attack(player.GetComponent<Player2D>());
+			Attack();
 		}
 	}
 
-	public void Attack(Player2D player)
+	public void Attack()
 	{
 		
 		if(timeSinceAttack >= attackSpeed)

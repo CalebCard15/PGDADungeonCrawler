@@ -20,7 +20,7 @@ public class Enemy : MonoBehaviour
 
 	// Use this for initialization
 	protected void Start () {
-		player = GameObject.Find("Player2D(Clone)");
+		player = GameObject.Find("Player");
 	}
 
 

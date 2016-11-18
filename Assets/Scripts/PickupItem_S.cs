@@ -12,8 +12,8 @@ public class PickupItem_S : MonoBehaviour
 	void Start () 
 	{
 		i = Random.Range(0, pickUpItemsArray.Length+1);
-		GetComponent<SpriteRenderer>().sprite = pickUpItemsArray[i].itemSprt;
-		functionNameToCall = pickUpItemsArray[i].functionName;
+		//GetComponent<SpriteRenderer>().sprite = pickUpItemsArray[i].itemSprt;
+		//functionNameToCall = pickUpItemsArray[i].functionName;
 	}
 	
 	// Update is called once per frame
@@ -32,7 +32,9 @@ public class PickupItem_S : MonoBehaviour
 			{
 			case "health":
 				Debug.Log("get some health");
-				col.GetComponent<Player2D>().health += 15;
+				Player2D.instance.health += 15;
+				if(Player2D.instance.health > Player2D.instance.maxHealth)
+					Player2D.instance.health = Player2D.instance.maxHealth;
 				GetComponent<CircleCollider2D>().enabled = false;
 				GetComponent<SpriteRenderer>().enabled = false;
 

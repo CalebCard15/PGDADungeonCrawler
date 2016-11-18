@@ -1,27 +1,54 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class UIManager : MonoBehaviour {
+public class UIManager : PersistentSingleton<UIManager> {
 
-	public Text levelText;
-	public Text healthText;
+	public Image healthBar;
+	public Image manaBar;
+	public Image xpBar;
 
 	private GameManager gameManager;
-	private Player2D player;
 
+
+
+	void OnEnable()
+	{
+		SceneManager.sceneLoaded += OnLoadLevel;
+	}
+	void OnDisable()
+	{
+		SceneManager.sceneLoaded -= OnLoadLevel;
+	}
+
+	void OnLoadLevel(Scene scene, LoadSceneMode mode)
+	{
+		Init();
+	}
 
 	// Use this for initialization
 	void Start () {
-		player = GameObject.Find("Player2D(Clone)").GetComponent<Player2D>();
-		gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+		
+		Init();
 //		levelText = GameObject.Find("LevelText").GetComponent<Text>();
 //		healthText = GameObject.Find("HealthText").GetComponent<Text>();
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		levelText.text = "Current Level: " + gameManager.currentLevel;
-		healthText.text = "Health: " + player.health;
+
+	void Init()
+	{
+		
+		gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+		healthBar = GameObject.Find("HealthBar").GetComponent<Image>();
+		manaBar = GameObject.Find("ManaBar").GetComponent<Image>();
+		xpBar = GameObject.Find("XPBar").GetComponent<Image>();
+		UpdateUI();
 	}
+
+	public void UpdateUI()
+	{
+		//levelText.text = "Current Level: " + gameManager.currentLevel;
+		healthBar.fillAmount = (float)Player2D.instance.health/Player2D.instance.maxHealth;
+	}
+
 }

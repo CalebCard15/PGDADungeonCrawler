@@ -125,7 +125,7 @@ public class MapGenerator : MonoBehaviour {
 				Instantiate(exitTile, position, exitTile.transform.rotation);
 				break;
 			case 4:
-				Instantiate(player, position, player.transform.rotation);
+				Player2D.instance.transform.position = position;
 				break;
 		}
 

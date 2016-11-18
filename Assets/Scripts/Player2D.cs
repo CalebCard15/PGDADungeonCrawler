@@ -2,12 +2,13 @@
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class Player2D : MonoBehaviour {
+public class Player2D : PersistentSingleton<Player2D> {
 
 	public GameObject bullet;
 	public GameObject bulletSpawn;
 
-	public int health = 100;
+	public int maxHealth = 100;
+	public int health;
 
 	public float secondsPerShot = .5f;
 	private float timeSinceLastShot;
@@ -24,7 +25,7 @@ public class Player2D : MonoBehaviour {
 		rigidbody = GetComponent<Rigidbody2D> ();
 		Enemy.GetHit += Hit;
 		gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-		health = 100;
+		health = maxHealth;
 		playerAnim = GetComponent<Animator>();
 	}
 
@@ -61,8 +62,10 @@ public class Player2D : MonoBehaviour {
 
 	void Hit(int damage)
 	{
-		print(damage);
-		if(health - damage <= 0)
+		health -= damage;
+		UIManager.instance.UpdateUI();
+
+		if(health <= 0)
 		{
 			//Die!!
 			Enemy.GetHit -= Hit;
@@ -70,8 +73,8 @@ public class Player2D : MonoBehaviour {
 			SceneManager.LoadScene("Scene 2D");
 		}
 
-		health -= damage;
-		print(health); 
+
+
 	}
 
 
