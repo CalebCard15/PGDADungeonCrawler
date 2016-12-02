@@ -56,6 +56,8 @@ public class GameManager : MonoBehaviour {
 	public void RestartGame()
 	{
 		currentLevel = 1;
+		UIManager.instance.ReactivateBars();
+		Player2D.instance.health = 100;
 		SceneManager.LoadScene("Scene 2D");
 		pauseScreen = GetComponentInChildren<Canvas>();
 	}
@@ -63,6 +65,7 @@ public class GameManager : MonoBehaviour {
 	public void LoadNextLevel()
 	{
 		currentLevel++;
+		UIManager.instance.ReactivateBars();
 		SceneManager.LoadScene("Scene 2D");
 	}
 

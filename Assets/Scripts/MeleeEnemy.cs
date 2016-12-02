@@ -8,11 +8,13 @@ public class MeleeEnemy : Enemy {
 	public float attackSpeed = 1.5f;
 	public float timeSinceAttack = 0.0f;
 
+	private bool isAttacking;
 	private Animator animator;
 
 	// Use this for initialization
 	void Start () {
 		base.Start();
+		isAttacking = false;
 		maxHealth = 100;
 		health = maxHealth;
 
@@ -28,7 +30,7 @@ public class MeleeEnemy : Enemy {
 	public override void Move() 
 	{
 		
-		if(Vector3.Distance(transform.position, Player2D.instance.transform.position) < 10)
+		if(Vector3.Distance(transform.position, Player2D.instance.transform.position) < 10 && !isAttacking)
 		{
 			if(dead)
 				transform.up = transform.position - transform.position;
@@ -67,6 +69,7 @@ public class MeleeEnemy : Enemy {
 		
 		if(timeSinceAttack >= attackSpeed)
 		{
+			isAttacking = true;
 			animator.SetBool("IsAttacking", true);
 		}
 	}
@@ -79,6 +82,7 @@ public class MeleeEnemy : Enemy {
 
 	public void ChangeAnimatorBool()
 	{
+		isAttacking = false;
 		animator.SetBool("IsAttacking", false);
 	}
 }

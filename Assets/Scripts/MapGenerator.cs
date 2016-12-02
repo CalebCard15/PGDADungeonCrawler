@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
+public enum ObjectType{Item, Enemy, Exit, Player, Prop, WallRock};
+
 public class MapGenerator : MonoBehaviour {
 
 	public GameManager gameManager;
@@ -13,6 +15,7 @@ public class MapGenerator : MonoBehaviour {
 	public int roomThresholdSize = 50;
 
 	public int tilesPerEnemy = 500;
+	public int tilesPerProp = 100;
 
 	public string seed;
 	public bool useRandomSeed;
@@ -21,11 +24,13 @@ public class MapGenerator : MonoBehaviour {
 	public int randomFillPercent;
 	public System.Random pseudoRandom;
 
+	public GameObject wallRock;
 	public GameObject exitTile;
 	public GameObject player;
 
 	public List<GameObject> itemList;
 	public List<GameObject> enemyList;
+	public List<GameObject> propList;
 
 
 	int[,] map;
@@ -57,7 +62,7 @@ public class MapGenerator : MonoBehaviour {
 
 		ProcessMap ();
 
-		int borderSize = 1;
+		int borderSize = 30;
 		int[,] borderedMap = new int[width + borderSize * 2,height + borderSize * 2];
 
 		for (int x = 0; x < borderedMap.GetLength(0); x ++) {
@@ -105,27 +110,53 @@ public class MapGenerator : MonoBehaviour {
 		survivingRooms [0].isMainRoom = true;
 		survivingRooms [0].isAccessibleFromMainRoom = true;
 
-		ConnectClosestRooms (survivingRooms);
 		AddObjectsToDungeon(survivingRooms);
+		ConnectClosestRooms (survivingRooms);
+		CreateWallRocks();
+
 	}
 
-	public void PlaceObject(int type, Vector3 position)
+	//Add the rocks on the walls to try to soften the mesh
+	void CreateWallRocks()
+	{
+		for(int i = 0; i < width; i++)
+		{
+			for(int j = 0; j < height; j++)
+			{
+				if(map[i,j] == 1 && GetSurroundingWallCount(i,j) < 7)
+					PlaceObject(ObjectType.WallRock, CoordToWorldPoint(new Coord(i,j)));
+			}
+		}
+
+	}
+
+	//Actually places the object of type at the position given
+	public void PlaceObject(ObjectType type, Vector3 position)
 	{
 		switch(type)
 		{
-			case 1:
+			case ObjectType.Item:
 				int itemNum = pseudoRandom.Next(0, itemList.Count);
 				Instantiate(itemList[itemNum], position, itemList[itemNum].transform.rotation);
 				break;
-			case 2:
+			case ObjectType.Enemy:
 				int enemyNum = pseudoRandom.Next(0, enemyList.Count);
 				Instantiate(enemyList[enemyNum], position, enemyList[enemyNum].transform.rotation);
 				break;
-			case 3:
+			case ObjectType.Exit:
 				Instantiate(exitTile, position, exitTile.transform.rotation);
 				break;
-			case 4:
+			case ObjectType.Player:
 				Player2D.instance.transform.position = position;
+				break;
+			case ObjectType.Prop:
+				position.z = .01f;
+				int propNum = pseudoRandom.Next(0, propList.Count);
+				Instantiate(propList[propNum], position, propList[propNum].transform.rotation);
+				break;
+			case ObjectType.WallRock:
+			Vector3 rotation = new Vector3(0,0,pseudoRandom.Next(0,360));
+			Instantiate(wallRock, position, Quaternion.Euler(rotation));
 				break;
 		}
 
@@ -135,32 +166,49 @@ public class MapGenerator : MonoBehaviour {
 	void AddObjectsToDungeon(List<Room> rooms)
 	{
 		//Place the player in the map
-		PlaceObject(4, CoordToWorldPoint(rooms[rooms.Count - 1].tiles[pseudoRandom.Next(0, rooms[rooms.Count - 1].tiles.Count)]));
+		Vector3 playerPosition = CoordToWorldPoint(rooms[rooms.Count - 1].tiles[pseudoRandom.Next(0, rooms[rooms.Count - 1].tiles.Count)]);
+		PlaceObject(ObjectType.Player, playerPosition);
 
 		//Place the Exit tile in the map
 		int roomNumber = pseudoRandom.Next(0, rooms.Count-1);
 		Room exitRoom = rooms[roomNumber];
 
 		int edgeTileNumber = pseudoRandom.Next(0, exitRoom.edgeTiles.Count);
-		PlaceObject(3, CoordToWorldPoint(exitRoom.edgeTiles[edgeTileNumber]));
+		PlaceObject(ObjectType.Exit, CoordToWorldPoint(exitRoom.edgeTiles[edgeTileNumber]));
 
-		//Place the enemies and the items in the map
+		//Place the enemies and the items and props in the map
 		foreach(Room room in rooms)
 		{
 			print(room.tiles.Count);
 
 			int numOfEnemies = room.tiles.Count/tilesPerEnemy;
+			int numOfProps = room.tiles.Count/tilesPerProp;
 			numOfEnemies *= gameManager.currentLevel;
 
 
 
 			int tileNumber = pseudoRandom.Next(0, room.tiles.Count);
-			PlaceObject(1, CoordToWorldPoint(room.tiles[tileNumber]));
+			PlaceObject(ObjectType.Item, CoordToWorldPoint(room.tiles[tileNumber]));
+
+
+
+			for(int i = 0; i <= numOfProps; i++)
+			{
+				tileNumber = pseudoRandom.Next(0, room.tiles.Count);
+				Vector3 propPosition = CoordToWorldPoint(room.tiles[tileNumber]);
+				PlaceObject(ObjectType.Prop, propPosition);
+			}
 
 			for(int i = 0; i <= numOfEnemies; i++)
 			{
 				tileNumber = pseudoRandom.Next(0, room.tiles.Count);
-				PlaceObject(2, CoordToWorldPoint(room.tiles[tileNumber]));
+				Vector3 enemyPosition = CoordToWorldPoint(room.tiles[tileNumber]);
+				if(Vector3.Distance(playerPosition, enemyPosition) < 10)
+				{
+					continue;
+				}
+				PlaceObject(ObjectType.Enemy, enemyPosition);
+
 			}
 		}
 

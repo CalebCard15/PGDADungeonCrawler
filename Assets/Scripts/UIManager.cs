@@ -40,7 +40,6 @@ public class UIManager : PersistentSingleton<UIManager> {
 
 	void Init()
 	{
-		
 		//gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 		healthBar = GameObject.Find("HealthBar").GetComponent<Image>();
 		manaBar = GameObject.Find("ManaBar").GetComponent<Image>();
@@ -56,6 +55,11 @@ public class UIManager : PersistentSingleton<UIManager> {
 	{
 		//levelText.text = "Current Level: " + gameManager.currentLevel;
 		healthBar.fillAmount = (float)Player2D.instance.health/Player2D.instance.maxHealth;
+	}
+
+	public void ReactivateBars()
+	{
+		enemyHealthUI.SetActive(true);
 	}
 
 	public void EnemyHealthSet(Enemy enemy)

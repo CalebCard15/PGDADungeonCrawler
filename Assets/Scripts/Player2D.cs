@@ -68,9 +68,7 @@ public class Player2D : PersistentSingleton<Player2D> {
 		if(health <= 0)
 		{
 			//Die!!
-			Enemy.GetHit -= Hit;
-			gameManager.currentLevel = 1;
-			SceneManager.LoadScene("Scene 2D");
+			gameManager.RestartGame();
 		}
 
 
